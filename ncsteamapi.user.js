@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         nCore steamAPI Helper
 // @namespace    by dbw
-// @version      0.7.6
+// @version      0.7.7
 // @description  nCore x SteamAPI
 // @author       neonoxd aka dbw
 // @homepageURL      https://github.com/neonoxd/nCoreSteamAPI/
@@ -108,7 +108,7 @@ csss.textContent = '.torrent_steam_tartalom { margin:auto; } '+
 '.steam_meta_info {   text-alignt:left !important; margin-top: 5px; } '+
 '.steam_header_meta { vertical-align:top;     padding-left: 5px; } '+
 '.hideimg {display:none;} '+
-'.steam_loading: { background-repeat: no-repeat;background-position: center; background-image: url(https://static.ncore.cc/styles/ajax.gif);}';
+'.steam_loading { background-repeat: no-repeat;background-position: center; background-image: url(https://static.ncore.cc/styles/ajax.gif);}';
 
 
 document.body.appendChild(csss);
