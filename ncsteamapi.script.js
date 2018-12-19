@@ -75,8 +75,6 @@ torrent = function(id) {
 						$(steamContentEl).append(headerHtml)
 
 
-
-						//steam previews
 						var previews = "";
 						var count = 0;
 						steamData.screenshots.forEach(function(i){
