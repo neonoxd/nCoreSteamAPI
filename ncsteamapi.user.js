@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         nCore steamAPI Helper
 // @namespace    by dbw
-// @version      0.7.4
+// @version      0.7.5
 // @description  nCore x SteamAPI
 // @author       neonoxd aka dbw
 // @homepageURL      https://github.com/neonoxd/nCoreSteamAPI/
@@ -27,15 +27,15 @@ torrent = function(id) {
 				var m = data.match("store\.steampowered\.com\/app\/[0-9]*");
 				if (m!=undefined){
 					var appid = m[0].split("app/")[1]
+					$($(e).find(".torrent_lenyilo_tartalom").find("br")[0]).before("<div class='torrent_steam_tartalom'></div>");
+					var steamContentEl = $(e).find(".torrent_steam_tartalom");
+					$(steamContentEl).html("&nbsp;");
+					$(steamContentEl).addClass("steam_loading");
 
 					$.get('https://cors-anywhere.herokuapp.com/https://store.steampowered.com/api/appdetails/?appids='+appid,function(resp){
-
+					$(steamContentEl).html("");
+					$(steamContentEl).removeClass("steam_loading");
                         var steamData = resp[appid].data;
-
-						$($(e).find(".torrent_lenyilo_tartalom").find("br")[0]).before("<div class='torrent_steam_tartalom'></div>");
-				
-						var steamContentEl = $(e).find(".torrent_steam_tartalom");
-
 						$(steamContentEl).append("<h2>"+steamData.name+"</h2>");
 
 						var devs ="";
@@ -107,7 +107,8 @@ csss.textContent = '.torrent_steam_tartalom { margin:auto; }'+
 ' .steam_short_desc {     border-bottom: 1px solid; padding-bottom: 5px; }'+
 ' .steam_meta_info {   text-alignt:left !important; margin-top: 5px; } '+
 '.steam_header_meta { vertical-align:top;     padding-left: 5px; }'+
-'.hideimg {display:none;}'
+'.hideimg {display:none;}'+
+'.steam_loading: { background-repeat: no-repeat;background-position: center; background-image: url(https://static.ncore.cc/styles/ajax.gif);}'
 ;
 
 
