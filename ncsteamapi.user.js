@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         nCore steamAPI Helper
 // @namespace    by dbw
-// @version      0.7.3
+// @version      0.7.4
 // @description  nCore x SteamAPI
 // @author       neonoxd aka dbw
 // @homepageURL      https://github.com/neonoxd/nCoreSteamAPI/
@@ -92,6 +92,8 @@ torrent = function(id) {
 						$('#'+id+' .fancy_groups').fancybox({'onStart':disableKeys,'onClosed':enableKeys,'type':'image'});
 					})
 
+				} else {
+					$('#'+id+' .fancy_groups').fancybox({'onStart':disableKeys,'onClosed':enableKeys,'type':'image'});
 				}
 
 			});
