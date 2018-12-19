@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         nCore steamAPI Helper
 // @namespace    by dbw
-// @version      0.7.5
+// @version      0.7.6
 // @description  nCore x SteamAPI
 // @author       neonoxd aka dbw
 // @homepageURL      https://github.com/neonoxd/nCoreSteamAPI/
@@ -102,14 +102,13 @@ torrent = function(id) {
 }
 
 var csss = document.createElement('style');
-csss.textContent = '.torrent_steam_tartalom { margin:auto; }'+
-'.steam_header_img{  }'+
-' .steam_short_desc {     border-bottom: 1px solid; padding-bottom: 5px; }'+
-' .steam_meta_info {   text-alignt:left !important; margin-top: 5px; } '+
-'.steam_header_meta { vertical-align:top;     padding-left: 5px; }'+
-'.hideimg {display:none;}'+
-'.steam_loading: { background-repeat: no-repeat;background-position: center; background-image: url(https://static.ncore.cc/styles/ajax.gif);}'
-;
+csss.textContent = '.torrent_steam_tartalom { margin:auto; } '+
+'.steam_header_img{  } '+
+'.steam_short_desc {     border-bottom: 1px solid; padding-bottom: 5px; } '+
+'.steam_meta_info {   text-alignt:left !important; margin-top: 5px; } '+
+'.steam_header_meta { vertical-align:top;     padding-left: 5px; } '+
+'.hideimg {display:none;} '+
+'.steam_loading: { background-repeat: no-repeat;background-position: center; background-image: url(https://static.ncore.cc/styles/ajax.gif);}';
 
 
 document.body.appendChild(csss);
