@@ -14,10 +14,10 @@
 
 (function() {
     'use strict';
-
+/*
 torrent = function(id) {
 		var e = $('#'+id);
-		var loading = '<div class="torrent_lenyilo_lehetoseg"><div class="lehetosegek">Lehetőségeid:</div><div class="letoltve"><a href="torrents.php?action=download&id='+id+'&key=be1f25bf429da642453fa65f4aeca3bd"><img src="data:image/gif;base64,R0lGODlhDwAPAJEAAAAAAP///////wAAACH5BAEAAAIALAAAAAAPAA8AAAINlI+py+0Po5y02otnAQA7" class="torr_reszletek_btn"></a></div><div class="letoltve_txt"><a href="torrents.php?action=download&id='+id+'&key=be1f25bf429da642453fa65f4aeca3bd">Torrent letöltése</a></div></div><div class="torrent_lenyilo_tartalom"><div style="margin:10px 0;text-align:center"><img src="https://static.ncore.cc/styles/ajax.gif" title="Töltés..."></div></div><div class="torrent_lenyilo_lab"></div>';
+		var loading = '<div class="torrent_lenyilo_lehetoseg"><div class="lehetosegek">Lehetőségeid:</div><div class="letoltve"><a href="torrents.php?action=download&id='+id+'"><img src="data:image/gif;base64,R0lGODlhDwAPAJEAAAAAAP///////wAAACH5BAEAAAIALAAAAAAPAA8AAAINlI+py+0Po5y02otnAQA7" class="torr_reszletek_btn"></a></div><div class="letoltve_txt"><a href="torrents.php?action=download&id='+id+'">Torrent letöltése</a></div></div><div class="torrent_lenyilo_tartalom"><div style="margin:10px 0;text-align:center"><img src="https://static.ncore.cc/styles/ajax.gif" title="Töltés..."></div></div><div class="torrent_lenyilo_lab"></div>';
         if (!e.html() || e.html()==loading) {
 			e.html(loading);
 			e.toggle(0);
@@ -89,7 +89,15 @@ torrent = function(id) {
 
 
 
-						$('#'+id+' .fancy_groups').fancybox({'onStart':disableKeys,'onClosed':enableKeys,'type':'image'});
+						$('#'+id+' .fancy_groups').fancybox({'onStart':disable
+						
+						
+						
+						
+						
+						
+						
+						s,'onClosed':enableKeys,'type':'image'});
 					})
 
 				} else {
@@ -112,5 +120,5 @@ csss.textContent = '.torrent_steam_tartalom { margin:auto; } '+
 
 
 document.body.appendChild(csss);
-
+*/
 })();
