@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         nCore steamAPI Helper
 // @namespace    by dbw
-// @version      0.7.8
+// @version      0.7.9
 // @description  nCore x SteamAPI
 // @author       neonoxd aka dbw
 // @homepageURL      https://github.com/neonoxd/nCoreSteamAPI/
@@ -13,17 +13,42 @@
 // ==/UserScript==
 
 (function() {
-    'use strict';
-/*
+	'use strict';
+
+	String.prototype.replaceAll = function(search, replacement) {
+		var target = this;
+		return target.replace(new RegExp(search, 'g'), replacement);
+	};
+	var passKey = torrent.toString().match("(\'&key=)(.{32})")[2]
+
+
+
 torrent = function(id) {
 		var e = $('#'+id);
-		var loading = '<div class="torrent_lenyilo_lehetoseg"><div class="lehetosegek">Lehetőségeid:</div><div class="letoltve"><a href="torrents.php?action=download&id='+id+'"><img src="data:image/gif;base64,R0lGODlhDwAPAJEAAAAAAP///////wAAACH5BAEAAAIALAAAAAAPAA8AAAINlI+py+0Po5y02otnAQA7" class="torr_reszletek_btn"></a></div><div class="letoltve_txt"><a href="torrents.php?action=download&id='+id+'">Torrent letöltése</a></div></div><div class="torrent_lenyilo_tartalom"><div style="margin:10px 0;text-align:center"><img src="https://static.ncore.cc/styles/ajax.gif" title="Töltés..."></div></div><div class="torrent_lenyilo_lab"></div>';
+		var loading = ''+
+		'<div class="torrent_lenyilo_lehetoseg">'+
+		'<div class="lehetosegek">Lehetőségeid:</div>'+
+		'<div class="letoltve">'+
+			'<a href="torrents.php?action=download&id='+id+'&key='+passKey+'">'+
+				'<img src="data:image/gif;base64,R0lGODlhDwAPAJEAAAAAAP///////wAAACH5BAEAAAIALAAAAAAPAA8AAAINlI+py+0Po5y02otnAQA7" class="torr_reszletek_btn">'+
+			'</a>'+
+		'</div>'+
+			'<div class="letoltve_txt">'+
+			'<a href="torrents.php?action=download&id='+id+'&key='+passKey+'">Torrent letöltése</a>'+
+			'</div>'+
+		'</div>'+
+		'<div class="torrent_lenyilo_tartalom">'+
+			'<div style="margin:10px 0;text-align:center"><img src="https://static.ncore.cc/styles/ajax.gif" title="Töltés..."></div>'+
+		'</div>'+
+		'<div class="torrent_lenyilo_lab"></div>';
+
         if (!e.html() || e.html()==loading) {
 			e.html(loading);
 			e.toggle(0);
 			$.get('ajax.php?action=torrent_drop&id='+id,function(data) {
 				e.html(data);
 				BannerEventHandler.init();
+				$('#'+id+' .fancy_groups').fancybox({'onStart':disableKeys,'onClosed':enableKeys,'type':'image'});
 				var m = data.match("store\.steampowered\.com\/app\/[0-9]*");
 				if (m!=undefined){
 					var appid = m[0].split("app/")[1]
@@ -89,19 +114,9 @@ torrent = function(id) {
 
 
 
-						$('#'+id+' .fancy_groups').fancybox({'onStart':disable
-						
-						
-						
-						
-						
-						
-						
-						s,'onClosed':enableKeys,'type':'image'});
+						$('div.torrent_steam_tartalom .fancy_groups').fancybox({'onStart':disableKeys,'onClosed':enableKeys,'type':'image'});
 					})
 
-				} else {
-					$('#'+id+' .fancy_groups').fancybox({'onStart':disableKeys,'onClosed':enableKeys,'type':'image'});
 				}
 
 			});
@@ -120,5 +135,5 @@ csss.textContent = '.torrent_steam_tartalom { margin:auto; } '+
 
 
 document.body.appendChild(csss);
-*/
+
 })();
