@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         nCore steamAPI Helper
 // @namespace    by dbw
-// @version      0.8.0
+// @version      0.8.1
 // @description  nCore x SteamAPI
 // @author       neonoxd aka dbw
 // @homepageURL      https://github.com/neonoxd/nCoreSteamAPI/
@@ -15,22 +15,72 @@
 (function() {
 	'use strict';
 
-	String.prototype.replaceAll = function(search, replacement) {
-		var target = this;
-		return target.replace(new RegExp(search, 'g'), replacement);
-	};
-	
-	var footer = $("#footer_center").text();
-	$("#footer_center").text(footer+" | nCoreSteamAPI 0.8.0 by DBW")
+	var ver = "0.8.1";
 	
 	var loc = "undef";
-
 	if (window.location.href.includes("torrents.php")) {
 		if (window.location.href.includes("?action=details")) {
 			loc = "details";
 		} else {
 			loc = "list";
 		}
+	}
+
+	function getSteamDataJSON(appid,cb){
+		var callback = cb || function(){};
+		$.get('https://cors-anywhere.herokuapp.com/https://store.steampowered.com/api/appdetails/?appids='+appid,
+		function(resp){
+			callback(resp);
+		});
+	}
+
+	function parseSteamJSONtoHTML(data,appid,id){
+		var steamContentHTML = "";
+		var steamData = data[appid].data;
+		steamContentHTML+="<h2>"+steamData.name+"</h2>"
+
+		//app metadata
+		var devs ="";
+		var publishers ="";
+		var genres = "";
+		var categs = "";
+		steamData.developers.forEach(function(dev){ devs+=dev });
+		steamData.publishers.forEach(function(pub){ publishers+=pub });
+		steamData.genres.forEach(function(g){ genres+=g.description+"; "; });
+		steamData.categories.forEach(function(g){ categs+=g.description+"; "; });
+
+		var cont_support = steamData.controller_support || "N/A";
+		var metaHtml=
+		'<div class="steam_short_desc">'+steamData.short_description+'</div>'+
+			'<table class="steam_meta_info">' +
+				'<tr><td><strong>Developer: </strong></td><td>' + devs + '</td>'+
+				'<tr><td><strong>Publisher: </strong></td><td>' + publishers + '</td>'+
+				'<tr><td><strong>Release Date: </strong></td><td>' + steamData.release_date.date + '</td>'+
+				'<tr><td><strong>Genre(s): </strong></td><td>' + genres + '</td>'+
+				'<tr><td><strong>Categories: </strong></td><td>' + categs + '</td>'+
+				'<tr><td><strong>Controller Support: </strong></td><td>' + cont_support + '</td>'+
+			'</table>';
+		var headerHtml = ""+
+					"<table>"+
+						"<tr>"+
+							"<td><img class='steam_header_img' src='"+steamData.header_image+"'></img></td>"+
+							"<td class='steam_header_meta'>"+metaHtml+"</td>";
+						"</tr>"+
+					"</table>"		
+		steamContentHTML+=headerHtml;
+
+		//thumbnails
+		var previews = "";
+		var count = 0;
+		steamData.screenshots.forEach(function(i){
+			var hide = (count>9) ? "hideimg" : "";
+			previews+='<td class="kepmeret_ico '+ hide +'"><div class="torrent_kep_ico2"><a class="fancy_groups" rel="g'+id+'" href="'+i.path_full+'"><img class="attached_link" src="'+i.path_thumbnail+'"></a></div></td>'
+			count++;
+		})
+
+		steamContentHTML+='<table class="torrent_kep_ico"><tbody><tr>'+previews+'</tr></tbody></table>';
+		
+		return steamContentHTML;
 	}
 
 	function append_details(){
@@ -45,68 +95,13 @@
 			$(steamContentEl).html("&nbsp;");
 			$(steamContentEl).addClass("steam_loading");
 
-			$.get('https://cors-anywhere.herokuapp.com/https://store.steampowered.com/api/appdetails/?appids='+appid,function(resp){
-							$(steamContentEl).html("");
-							$(steamContentEl).removeClass("steam_loading");
-								var steamData = resp[appid].data;
-								$(steamContentEl).append("<h2>"+steamData.name+"</h2>");
-	
-								var devs ="";
-								steamData.developers.forEach(function(dev){ devs+=dev });
-								var publishers ="";
-								steamData.publishers.forEach(function(pub){ publishers+=pub });
-								var genres = "";
-								steamData.genres.forEach(function(g){ genres+=g.description+"; "; });
-								var categs = "";
-								steamData.categories.forEach(function(g){ categs+=g.description+"; "; });
-	
-	
-								var descHtml = '<div class="steam_short_desc">'+steamData.short_description+'</div>'
-	
-								var cont_support = steamData.controller_support || "N/A";
-	
-								var metaHtml=
-									'<table class="steam_meta_info">' +
-										'<tr><td><strong>Developer: </strong></td><td>' + devs + '</td>'+
-										'<tr><td><strong>Publisher: </strong></td><td>' + publishers + '</td>'+
-										'<tr><td><strong>Release Date: </strong></td><td>' + steamData.release_date.date + '</td>'+
-										'<tr><td><strong>Genre(s): </strong></td><td>' + genres + '</td>'+
-										'<tr><td><strong>Categories: </strong></td><td>' + categs + '</td>'+
-										'<tr><td><strong>Controller Support: </strong></td><td>' + cont_support + '</td>'+
-									'</table>';
-	
-								var headerHtml = ""+
-											"<table>"+
-												"<tr>"+
-													"<td><img class='steam_header_img' src='"+steamData.header_image+"'></img></td>"+
-													"<td class='steam_header_meta'>"+descHtml+metaHtml+"</td>";
-												"</tr>"+
-											"</table>"
-	
-	
-	
-								$(steamContentEl).append(headerHtml)
-	
-	
-								var previews = "";
-								var count = 0;
-								steamData.screenshots.forEach(function(i){
-									var hide = (count>9) ? "hideimg" : "";
-									previews+='<td class="kepmeret_ico '+ hide +'"><div class="torrent_kep_ico2"><a class="fancy_groups" rel="g'+id+'" href="'+i.path_full+'"><img class="attached_link" src="'+i.path_thumbnail+'"></a></div></td>'
-									count++;
-								})
-	
-								$(steamContentEl).append(
-									'<table class="torrent_kep_ico"><tbody><tr>'+previews+'</tr></tbody></table>'
-								)
-	
-								$('div.torrent_steam_tartalom .fancy_groups').fancybox({'type':'image'});
-							})
-
+			getSteamDataJSON(appid,function(resp){
+				var html = parseSteamJSONtoHTML(resp,appid,id);
+				$(steamContentEl).html(html);
+				$(steamContentEl).removeClass("steam_loading");
+				$('div.torrent_steam_tartalom .fancy_groups').fancybox({'type':'image'});
+			});
 		}
-
-
-
 	}
 
 	function override_torrent() {
@@ -140,68 +135,17 @@
 						var m = data.match("store\.steampowered\.com\/app\/[0-9]*");
 						if (m!=undefined){ //steam url found in description
 							var appid = m[0].split("app/")[1]
-							$($(e).find(".torrent_lenyilo_tartalom").find("br")[0]).before("<div class='torrent_steam_tartalom'></div>");
+							$($(e).find(".torrent_lenyilo_tartalom").find("#ncoreajax"+id+"_files")[0]).after("<div class='torrent_steam_tartalom'></div>");
 							var steamContentEl = $(e).find(".torrent_steam_tartalom");
 							$(steamContentEl).html("&nbsp;");
 							$(steamContentEl).addClass("steam_loading");
-	
-							$.get('https://cors-anywhere.herokuapp.com/https://store.steampowered.com/api/appdetails/?appids='+appid,function(resp){
-							$(steamContentEl).html("");
-							$(steamContentEl).removeClass("steam_loading");
-								var steamData = resp[appid].data;
-								$(steamContentEl).append("<h2>"+steamData.name+"</h2>");
-	
-								var devs ="";
-								steamData.developers.forEach(function(dev){ devs+=dev });
-								var publishers ="";
-								steamData.publishers.forEach(function(pub){ publishers+=pub });
-								var genres = "";
-								steamData.genres.forEach(function(g){ genres+=g.description+"; "; });
-								var categs = "";
-								steamData.categories.forEach(function(g){ categs+=g.description+"; "; });
-	
-	
-								var descHtml = '<div class="steam_short_desc">'+steamData.short_description+'</div>'
-	
-								var cont_support = steamData.controller_support || "N/A";
-	
-								var metaHtml=
-									'<table class="steam_meta_info">' +
-										'<tr><td><strong>Developer: </strong></td><td>' + devs + '</td>'+
-										'<tr><td><strong>Publisher: </strong></td><td>' + publishers + '</td>'+
-										'<tr><td><strong>Release Date: </strong></td><td>' + steamData.release_date.date + '</td>'+
-										'<tr><td><strong>Genre(s): </strong></td><td>' + genres + '</td>'+
-										'<tr><td><strong>Categories: </strong></td><td>' + categs + '</td>'+
-										'<tr><td><strong>Controller Support: </strong></td><td>' + cont_support + '</td>'+
-									'</table>';
-	
-								var headerHtml = ""+
-											"<table>"+
-												"<tr>"+
-													"<td><img class='steam_header_img' src='"+steamData.header_image+"'></img></td>"+
-													"<td class='steam_header_meta'>"+descHtml+metaHtml+"</td>";
-												"</tr>"+
-											"</table>"
-	
-	
-	
-								$(steamContentEl).append(headerHtml)
-	
-	
-								var previews = "";
-								var count = 0;
-								steamData.screenshots.forEach(function(i){
-									var hide = (count>9) ? "hideimg" : "";
-									previews+='<td class="kepmeret_ico '+ hide +'"><div class="torrent_kep_ico2"><a class="fancy_groups" rel="g'+id+'" href="'+i.path_full+'"><img class="attached_link" src="'+i.path_thumbnail+'"></a></div></td>'
-									count++;
-								})
-	
-								$(steamContentEl).append(
-									'<table class="torrent_kep_ico"><tbody><tr>'+previews+'</tr></tbody></table>'
-								)
-	
+
+							getSteamDataJSON(appid,function(resp){
+								var html = parseSteamJSONtoHTML(resp,appid,id);
+								$(steamContentEl).html(html);
+								$(steamContentEl).removeClass("steam_loading");
 								$('div.torrent_steam_tartalom .fancy_groups').fancybox({'onStart':disableKeys,'onClosed':enableKeys,'type':'image'});
-							})
+							});
 	
 						}
 	
@@ -236,5 +180,7 @@ csss.textContent = ''+
 document.body.appendChild(csss);
 
 init();
+var footer = $("#footer_center").text();
+$("#footer_center").text(footer+" | nCoreSteamAPI "+ver+" by DBW")
 
 })();
