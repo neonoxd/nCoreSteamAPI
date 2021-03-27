@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         nCore steamAPI Helper
 // @namespace    by dbw
-// @version      0.8.2
+// @version      0.8.3
 // @description  nCore x SteamAPI
 // @author       neonoxd aka dbw
 // @homepageURL      https://github.com/neonoxd/nCoreSteamAPI/
@@ -16,7 +16,7 @@
 (function() {
 	'use strict';
 
-	var ver = "0.8.2";
+	var ver = "0.8.3";
 	
 	var loc = "undef";
 	if (window.location.href.includes("torrents.php")) {
