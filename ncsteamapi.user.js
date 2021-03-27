@@ -29,7 +29,7 @@
 
 	function getSteamDataJSON(appid,cb){
 		var callback = cb || function(){};
-		$.get('https://cors-anywhere.herokuapp.com/https://store.steampowered.com/api/appdetails/?appids='+appid,
+		$.get('https://steam-api-anywhere.herokuapp.com/https://store.steampowered.com/api/appdetails/?appids='+appid,
 		function(resp){
 			callback(resp);
 		});
